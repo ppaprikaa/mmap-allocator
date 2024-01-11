@@ -23,6 +23,10 @@ class MMapMemView {
 	
 		MMapMemView(MMapMemView&& that) noexcept;
 		MMapMemView& operator=(MMapMemView&& that) noexcept;
+
+		size_t Size() const noexcept {
+			return size_;
+		}
 		
 		const char* Start() const noexcept {
 			return start_;
