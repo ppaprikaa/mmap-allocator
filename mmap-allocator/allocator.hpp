@@ -45,6 +45,10 @@ class MMapMemView {
 		}
 
 		MutableMemView Release();
+
+		static MMapMemView Acquire(MutableMemView view) {
+			return {view.Start(), view.Size()};
+		}
 		
 		bool HasSpace() const noexcept {
 			return size_ > 0;
