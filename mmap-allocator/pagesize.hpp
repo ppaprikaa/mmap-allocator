@@ -3,5 +3,5 @@
 #include <cstddef>
 
 namespace gears {
-	size_t PageSize();
+size_t PageSize();
 }

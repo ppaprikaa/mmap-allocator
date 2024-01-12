@@ -5,62 +5,48 @@
 #include <mmap-allocator/mem-view.hpp>
 
 class MMapMemView {
-	public:
-		MMapMemView() {
-			Reset();
-		}
+  public:
+    MMapMemView() { Reset(); }
 
-		~MMapMemView() {
-			Deallocate();
-		}
+    ~MMapMemView() { Deallocate(); }
 
-		static MMapMemView AllocatePages(size_t pages, void *start = nullptr) ;
-		static size_t PageSize();
-		static size_t PagesToBytes(size_t pages);
+    static MMapMemView AllocatePages(size_t pages, void *start = nullptr);
+    static size_t PageSize();
+    static size_t PagesToBytes(size_t pages);
 
-		void Deallocate();
-		void ProtectPages(size_t start_page, size_t pages);
-	
-		MMapMemView(MMapMemView&& that) noexcept;
-		MMapMemView& operator=(MMapMemView&& that) noexcept;
+    void Deallocate();
+    void ProtectPages(size_t start_page, size_t pages);
 
-		size_t Size() const noexcept {
-			return size_;
-		}
-		
-		const char* Start() const noexcept {
-			return start_;
-		}
+    MMapMemView(MMapMemView &&that) noexcept;
+    MMapMemView &operator=(MMapMemView &&that) noexcept;
 
-		const char* End() const noexcept {
-			return start_ + size_;
-		}
+    size_t Size() const noexcept { return size_; }
 
-		ConstMemView ConstView() const noexcept {
-			return {(char*)start_, size_};
-		}
+    const char *Start() const noexcept { return start_; }
 
-		MutableMemView MutableView() const noexcept {
-			return {(char*)start_, size_};
-		}
+    const char *End() const noexcept { return start_ + size_; }
 
-		MutableMemView Release();
+    ConstMemView ConstView() const noexcept { return {(char *)start_, size_}; }
 
-		static MMapMemView Acquire(MutableMemView view) {
-			return {view.Start(), view.Size()};
-		}
-		
-		bool HasSpace() const noexcept {
-			return size_ > 0;
-		}
+    MutableMemView MutableView() const noexcept {
+        return {(char *)start_, size_};
+    }
 
-		bool IsValid() const noexcept {
-			return start_ != nullptr;
-		}
-	private:
-		void Reset() noexcept;
-		MMapMemView(char* start, size_t size) : start_(start), size_(size) {}
-	private:
-		const char* start_;
-		size_t size_;
+    MutableMemView Release();
+
+    static MMapMemView Acquire(MutableMemView view) {
+        return {view.Start(), view.Size()};
+    }
+
+    bool HasSpace() const noexcept { return size_ > 0; }
+
+    bool IsValid() const noexcept { return start_ != nullptr; }
+
+  private:
+    void Reset() noexcept;
+    MMapMemView(char *start, size_t size) : start_(start), size_(size) {}
+
+  private:
+    const char *start_;
+    size_t size_;
 };
